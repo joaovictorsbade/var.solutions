@@ -1,5 +1,7 @@
 package com.br.var.solutions;
 
+import ch.qos.logback.core.net.server.Client;
+import com.br.var.solutions.security.JwtTokenUtil;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -230,6 +232,27 @@ public class PessoaController {
         tokenResponse.setToken(token);
         tokenResponse.setExpiraEm(new Date(expirationDate));
         tokenResponse.setTempoValidacao(expirationDate);
+
+        log.info("Token Gerado com sucesso para o usuario " + clientId + " Em: " + System.currentTimeMillis());
+        return ResponseEntity.ok(tokenResponse);
+
+    }
+
+    @PostMapping(path = "/authenticate", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public ResponseEntity<GenerateToken> generateToken(@RequestParam("client_id") String clientId, @RequestParam("password") String password) {
+        log.info("Iniciando a tentativa de geração de token para o usuario" + clientId);
+        Boolean validaUsuario = ValidaUsuario.validaUsuario(clientId, password);
+        if (Boolean.FALSE.equals(validaUsuario)) {
+            log.error("Não foi possivel gerar o token, pois o usuario ou a senha estão incorretos");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new GenerateToken());
+        }
+
+        JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+        String token = jwtTokenUtil.generateToken(clientId);
+
+
+        GenerateToken tokenResponse = new GenerateToken();
+        tokenResponse.setToken(token);
 
         log.info("Token Gerado com sucesso para o usuario " + clientId + " Em: " + System.currentTimeMillis());
         return ResponseEntity.ok(tokenResponse);

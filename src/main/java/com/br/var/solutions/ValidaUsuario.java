@@ -31,4 +31,24 @@ public class ValidaUsuario {
         }
         return false;
     }
+
+    public static String returnPassword(String username) {
+        for (ValidaUser validaUser : ValidaUser.values()) {
+
+            if (validaUser.getUsuario().equalsIgnoreCase(username)) {
+                return validaUser.getSenha();
+            }
+        }
+        return null;
+    }
+
+    public static String returnUsername(String username) {
+        for (ValidaUser validaUser : ValidaUser.values()) {
+
+            if (validaUser.getUsuario().equalsIgnoreCase(username)){
+                return validaUser.getUsuario();
+            }
+        }
+        return null;
+    }
 }

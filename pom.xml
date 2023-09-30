@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.0</version>
+		<version>2.6.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.br</groupId>
@@ -47,23 +47,15 @@
 
 		<!--JWT GERAR TOKEN-->
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.10.5</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.10.5</version>
-			<scope>runtine</scope>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
 		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.10.5</version>
-			<scope>runtine</scope>
-		</dependency>
-		<!--JWT GERAR TOKEN-->
+		<!-- FIM JWT GERAR TOKEN-->
 	</dependencies>
 
 	<build>
