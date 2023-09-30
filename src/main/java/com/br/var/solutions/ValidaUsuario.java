@@ -24,6 +24,7 @@ public class ValidaUsuario {
 
     public static Boolean validaUsuario(String username, String password) {
         for (ValidaUser validaUser : ValidaUser.values()) {
+
             if (validaUser.getUsuario().equalsIgnoreCase(username) && validaUser.getSenha().equals(password)) {
                 return true;
             }
