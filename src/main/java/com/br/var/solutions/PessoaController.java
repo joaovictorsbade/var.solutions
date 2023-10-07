@@ -4,7 +4,7 @@ import ch.qos.logback.core.net.server.Client;
 import com.br.var.solutions.security.JwtTokenUtil;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+//import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
