@@ -19,7 +19,7 @@ public class JwtTokenUtil implements Serializable {
 
     public static final long JWT_TOKEN_EXPIRES = 1800000;
 
-    private String secret = " bc2784cebe53d34a2219b42aeee52575f7573fd2b1bbdd17d081b75eec0be45b4379818cd4bd41cd343f82e44037f0ec471bf904927cd4ba8d702e0b6e0934b9";
+    private String secret = "bc2784cebe53d34a2219b42aeee52575f7573fd2b1bbdd17d081b75eec0be45b4379818cd4bd41cd343f82e44037f0ec471bf904927cd4ba8d702e0b6e0934b9";
 
     //retorna o username do token do jwt
     public String getUsernameFronToken(String token){
@@ -54,6 +54,7 @@ public class JwtTokenUtil implements Serializable {
         return doGenerateToken(claims, clientId);
     }
 
+//    Cria o token e define o tempo de expiração
     private String doGenerateToken(Map<String, Object> claims, String clientId) {
         return Jwts.builder().setClaims(claims).setSubject(clientId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))

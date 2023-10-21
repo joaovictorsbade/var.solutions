@@ -198,19 +198,19 @@ public class PessoaController {
             return imcCalculado;
         }
     }
-//    @DeleteMapping
-//    public void retornDelete(){
-//
-//    }
-//    @PutMapping
-//    public void retornoPut(){
-//
-//    }
-//    @PostMapping
-//    public void retornoPost(){
-//
-//    }
+    @DeleteMapping
+    public void retornoDelete(){
 
+    }
+    @PutMapping
+    public void retornoPut(){
+
+    }
+    @PostMapping
+    public void retornoPost(){
+
+    }
+//No lugar do GenerateToken esta String
     @PostMapping(path = "/authorization", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ResponseEntity<GenerateToken> authorization(@RequestParam("client_id") String clientId, @RequestParam("password") String password) {
         log.info("Iniciando a tentativa de geração de token para o usuario" + clientId);
@@ -254,7 +254,7 @@ public class PessoaController {
         GenerateToken tokenResponse = new GenerateToken();
         tokenResponse.setToken(token);
 
-        log.info("Token Gerado com sucesso para o usuario " + clientId + " Em: " + System.currentTimeMillis());
+        log.info("Token Gerado com sucesso para o usuario:" + clientId + " Em: " + System.currentTimeMillis());
         return ResponseEntity.ok(tokenResponse);
 
     }

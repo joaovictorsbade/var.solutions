@@ -25,26 +25,26 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private JwtTokenUtil jwtTokenUtil;
 @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-    final String requestTokenHeader = request.getHeader("Athorization");
+    final String requestTokenHeader = request.getHeader("Authorization");
     String username = null;
     String jwtToken = null;
     //JWT token esta no form "bearer token".Temos que remover a palavra bearer e pegar somente o token
 
-    if(requestTokenHeader != null && requestTokenHeader.startsWith("Bearer")){
+    if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
         jwtToken = requestTokenHeader.substring(7);
-        try{
+        try {
             username = jwtTokenUtil.getUsernameFronToken(jwtToken);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.out.println("Não foi possivel capturar o token;");
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             System.out.println("O token é expirado;");
         }
     } else {
-        log.error("Não existe um token na requisicçao ou não é um Bearer token;");
+        log.error("Não existe um token na requisição ou não é um Bearer token;");
     }
 
     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-        UserDetails userDetails = this.jwtUserDetailService.loadUserByUsername (username);
+        UserDetails userDetails = this.jwtUserDetailService.loadUserByUsername(username);
 
         if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
@@ -53,8 +53,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
-        }
-            chain.doFilter(request, response);
+
+    }
+    chain.doFilter(request, response);
+
         }
     }
-
