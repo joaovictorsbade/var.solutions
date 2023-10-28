@@ -1,20 +1,12 @@
-package com.br.var.solutions;
+package com.br.var.solutions.adapters.input.controllers;
 
-import ch.qos.logback.core.net.server.Client;
-import com.br.var.solutions.security.JwtTokenUtil;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-//import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
+import com.br.var.solutions.*;
+import com.br.var.solutions.application.services.use.MundialUseCase;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.KeyStore;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 @RestController
@@ -23,7 +15,8 @@ import java.util.Objects;
 @Slf4j
 public class PessoaController {
 
-    private static final String SECRET_KEY = "tokenApiVarSolutions2023RrequestAurhorizationbRASIL";
+@Autowired
+    MundialUseCase mundialUseCase;
 
     @GetMapping
     public ResponseEntity<Object> get() {
@@ -31,7 +24,7 @@ public class PessoaController {
         pessoaRequest1.setNome("Joao");
         pessoaRequest1.setSobrenome("Barbosa");
         pessoaRequest1.setEndereco("Rua Joaquin Santos Leite");
-        pessoaRequest1.setIdade(17);
+        pessoaRequest1.setIdade(18);
 
         return ResponseEntity.ok(pessoaRequest1);
     }
@@ -67,7 +60,7 @@ public class PessoaController {
             if (Boolean.TRUE.equals(DesejavalidaMundial)) {
                 if (Objects.nonNull(pessoinha.getTime())) {
                     log.info("Validando se o time de coração tem mundial: ");
-                    validaMundial = calculaMundial(pessoinha.getTime());
+                    validaMundial = mundialUseCase.calculoMundial(pessoinha.getTime());
                 }
             }
 
@@ -109,18 +102,6 @@ public class PessoaController {
 
     private String converteSaldoEmDolar(double saldo) {
         return String.valueOf(saldo / 4.49);
-    }
-
-    private String calculaMundial(String time) {
-        if (time.equalsIgnoreCase("Corinthians")) {
-            return "Parabéns, o seu time possui dois mundiais de clubes conforme a FIFA";
-        } else if (time.equalsIgnoreCase("São Paulo")) {
-            return "Parabéns, o seu time possui Três mundiais de clubes conforme a FIFA";
-        } else if (time.equalsIgnoreCase("Santos")) {
-            return "Parabéns, o seu time possui dois mundiais de clubes conforme a FIFA";
-        } else {
-            return "Poxa, que pena, continue torcendo para seu time ganhar um mundial";
-        }
     }
 
     private String calculoFaixaImpostoRenda(double salario) {
@@ -197,65 +178,5 @@ public class PessoaController {
             imcCalculado.setClassificacao("obesidade III");
             return imcCalculado;
         }
-    }
-//    @DeleteMapping
-//    public void retornoDelete(){
-//
-//    }
-//    @PutMapping
-//    public void retornoPut(){
-//
-//    }
-//    @PostMapping
-//    public void retornoPost(){
-//
-//    }
-//No lugar do GenerateToken esta String
-    @PostMapping(path = "/authorization", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public ResponseEntity<GenerateToken> authorization(@RequestParam("client_id") String clientId, @RequestParam("password") String password) {
-        log.info("Iniciando a tentativa de geração de token para o usuario" + clientId);
-        Boolean validaUsuario = ValidaUsuario.validaUsuario(clientId, password);
-        if (Boolean.FALSE.equals(validaUsuario)) {
-            log.error("Não foi possivel gerar o token, pois o usuario ou a senha estão incorretos");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new GenerateToken());
-        }
-
-        long expirationDate = System.currentTimeMillis() + 1800000;
-
-        String token = Jwts.builder()
-                .setSubject(clientId)
-                .setExpiration(new Date(expirationDate))
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-                .compact();
-        GenerateToken tokenResponse = new GenerateToken();
-
-        tokenResponse.setToken(token);
-        tokenResponse.setExpiraEm(new Date(expirationDate));
-        tokenResponse.setTempoValidacao(expirationDate);
-
-        log.info("Token Gerado com sucesso para o usuario " + clientId + " Em: " + System.currentTimeMillis());
-        return ResponseEntity.ok(tokenResponse);
-
-    }
-
-    @PostMapping(path = "/authenticate", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public ResponseEntity<GenerateToken> generateToken(@RequestParam("client_id") String clientId, @RequestParam("password") String password) {
-        log.info("Iniciando a tentativa de geração de token para o usuario" + clientId);
-        Boolean validaUsuario = ValidaUsuario.validaUsuario(clientId, password);
-        if (Boolean.FALSE.equals(validaUsuario)) {
-            log.error("Não foi possivel gerar o token, pois o usuario ou a senha estão incorretos");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new GenerateToken());
-        }
-
-        JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
-        String token = jwtTokenUtil.generateToken(clientId);
-
-
-        GenerateToken tokenResponse = new GenerateToken();
-        tokenResponse.setToken(token);
-
-        log.info("Token Gerado com sucesso para o usuario: " + clientId + " Em: " + System.currentTimeMillis());
-        return ResponseEntity.ok(tokenResponse);
-
     }
 }
