@@ -32,28 +32,6 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-
-
-
-		<!--		&lt;!&ndash;SWEGGER&ndash;&gt;-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.springdoc</groupId>-->
-<!--			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
-<!--			<version>2.0.0</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.springdoc</groupId>-->
-<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
-<!--			<version>1.6.14</version>-->
-<!--		</dependency>-->
-<!--	    &lt;!&ndash;FIM SWAGGER&ndash;&gt;-->
-
 		<!--JWT GERAR TOKEN-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -63,6 +41,11 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
 		</dependency>
 		<!-- FIM JWT GERAR TOKEN-->
 	</dependencies>
